@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로또 1등 번호 예측</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+      background: #f3f3f3;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .section {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .ball {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin: 6px;
+      border-radius: 50%;
+      background: gold;
+      font-weight: bold;
+      box-shadow: 0 0 4px #aaa;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result, #recent-log {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="section">
+      <h2>🎯 1등 번호 예측</h2>
+      <button onclick="predict()">예측하기</button>
+      <div id="result"></div>
+    </div>
+
+    <div class="section">
+      <h2>📋 최근 추천된 번호</h2>
+      <div id="recent-log"></div>
+    </div>
+  </div>
+
+<script>
+  function predict() {
+    fetch('/predict')
+      .then(res => res.json())
+      .then(data => {
+        const result = document.getElementById('result');
+        result.innerHTML = '';
+        data.main.forEach(num => {
+          const ball = document.createElement('div');
+          ball.className = 'ball';
+          ball.textContent = num;
+          result.appendChild(ball);
+        });
+        loadRecent();
+      });
+  }
+
+  function loadRecent() {
+    fetch('/recent')
+      .then(res => res.json())
+      .then(data => {
+        const logDiv = document.getElementById('recent-log');
+        logDiv.innerHTML = '';
+        data.reverse().forEach(entry => {
+          const line = document.createElement('div');
+          line.textContent = entry.numbers.join(', ');
+          logDiv.appendChild(line);
+        });
+      });
+  }
+
+  loadRecent();
+</script>
+
+
+</body>
+</html>

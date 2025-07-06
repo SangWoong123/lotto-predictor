@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로또 번호 생성기</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .numbers {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .ball {
+      width: 50px;
+      height: 50px;
+      background-color: #ffcc00;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 로또 번호 생성기</h1>
+
+  <div class="numbers" id="lottoNumbers">
+    <!-- 번호들이 여기에 표시됩니다 -->
+  </div>
+
+  <button onclick="generateLottoNumbers()">번호 생성</button>
+
+  <script>
+    function generateLottoNumbers() {
+      const numbers = new Set();
+      while (numbers.size < 6) {
+        const rand = Math.floor(Math.random() * 45) + 1;
+        numbers.add(rand);
+      }
+
+      const numberArray = Array.from(numbers).sort((a, b) => a - b);
+      const display = document.getElementById("lottoNumbers");
+      display.innerHTML = "";
+
+      numberArray.forEach(num => {
+        const ball = document.createElement("div");
+        ball.className = "ball";
+        ball.textContent = num;
+        display.appendChild(ball);
+      });
+    }
+  </script>
+
+</body>
+</html>
